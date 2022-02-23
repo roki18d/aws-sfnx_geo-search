@@ -11,7 +11,7 @@ client_id = os.environ["CLIENT_ID"]
 def lambda_handler(event, context): 
     
     try: 
-        query_encoded = urllib.parse.quote(event["query_ja"])
+        query_encoded = urllib.parse.quote(event["query"])
         url = f"https://map.yahooapis.jp/geocode/V1/geoCoder?appid={client_id}&output=json&query={query_encoded}"
         api_response = json.loads(requests.get(url).text)
         [lon, lat] = api_response["Feature"][0]["Geometry"]["Coordinates"].split(",")
