@@ -2,6 +2,18 @@
 
 artifacts/
 
-services/
+# libs
+services/*/bin/
+services/*/certifi/
+services/*/certifi-2021.10.8.dist-info
+services/*/charset_normalizer
+services/*/charset_normalizer-2.0.12.dist-info
+services/*/idna
+services/*/idna-3.3.dist-info
+services/*/requests
+services/*/requests-2.27.1.dist-info
+services/*/urllib3
+services/*/urllib3-1.26.8.dist-info
+
 !services/get-coordinates/lambda_function.py
 !services/reverse_geoinfo/lambda_function.py
