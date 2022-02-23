@@ -3,4 +3,5 @@
 artifacts/
 
 services/
-!*/lambda_function.py
+!services/get-coordinates/lambda_function.py
+!services/reverse_geoinfo/lambda_function.py
