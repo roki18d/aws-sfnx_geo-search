@@ -1,0 +1,6 @@
+.DS_Store
+
+artifacts/
+
+services/
+!*/lambda_function.py

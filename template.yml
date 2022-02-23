@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Lambda functions for SFNX
+
+Parameters: 
+
+  YahooAPIClientID: 
+    Type: String
+    Default: dj00aiZpPXh1Snk3OGlrRjRUciZzPWNvbnN1bWVyc2VjcmV0Jng9MWY-
+
+
+Resources: 
+  
+  FunctionGetGeoInfo:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: sfnx-function_get-coordinates
+      CodeUri: ./services/get-coordinates/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.9
+      Timeout: 5
+      MemorySize: 256
+      Policies: 
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      Environment:
+        Variables:
+          CLIENT_ID: !Ref YahooAPIClientID
+
+    
