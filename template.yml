@@ -9,10 +9,16 @@ Parameters:
   YahooAPIClientID: 
     Type: String
     Default: dj00aiZpPXh1Snk3OGlrRjRUciZzPWNvbnN1bWVyc2VjcmV0Jng9MWY-
-
+  MainteinerEnailAddress: 
+    Type: String
+    Default: hiroki.y1124@gmail.com
 
 Resources: 
-  
+
+  # ************************************************************
+  # Lambda functions
+  # ************************************************************
+
   FunctionGetCoordinates:
     Type: AWS::Serverless::Function
     Properties:
@@ -43,3 +49,41 @@ Resources:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
     
+  FunctionValidateQuery:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub sfnx-function_validate-query-${Version}
+      CodeUri: ./services/validate-query/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.9
+      Timeout: 5
+      MemorySize: 256
+      Policies: 
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      Environment:
+        Variables:
+          CLIENT_ID: !Ref YahooAPIClientID
+
+  # ************************************************************
+  # SNS Topics
+  # ************************************************************
+
+  TopicNotifyFail: 
+    Type: AWS::SNS::Topic
+    Properties: 
+      TopicName: "sfnx-topic-fail"
+      DisplayName: "FAIL - GeoSearch"
+      FifoTopic: False
+      Subscription: 
+        - Endpoint: !Ref MainteinerEnailAddress
+          Protocol: email
+
+  TopicNotifySuccess: 
+    Type: AWS::SNS::Topic
+    Properties: 
+      TopicName: "sfnx-topic-success"
+      DisplayName: "SUCCESS - GeoSearch"
+      FifoTopic: False
+      Subscription: 
+        - Endpoint: !Ref MainteinerEnailAddress
+          Protocol: email
