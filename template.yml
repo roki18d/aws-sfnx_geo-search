@@ -64,6 +64,36 @@ Resources:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
 
+  FunctionGetPlaceinfo:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub sfnx-function_get-placeinfo-${Version}
+      CodeUri: ./services/get-placeinfo/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.9
+      Timeout: 5
+      MemorySize: 256
+      Policies: 
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      Environment:
+        Variables:
+          CLIENT_ID: !Ref YahooAPIClientID
+
+  FunctionGetWeather:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub sfnx-function_get-weather-${Version}
+      CodeUri: ./services/get-weather/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.9
+      Timeout: 5
+      MemorySize: 256
+      Policies: 
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      Environment:
+        Variables:
+          CLIENT_ID: !Ref YahooAPIClientID
+
   # ************************************************************
   # SNS Topics
   # ************************************************************
