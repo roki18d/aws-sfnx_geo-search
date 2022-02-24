@@ -1,0 +1,57 @@
+{
+    "Comment": "A description of my state machine",
+    "StartAt": "Get Coordinates",
+    "States": {
+      "Get Coordinates": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::lambda:invoke",
+        "ResultPath": "$.results.coordinates",
+        "Parameters": {
+          "FunctionName": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_get-coordinates-v05:$LATEST",
+          "Payload.$": "$$.Execution.Input"
+        },
+        "Next": "Reverse Address"
+      },
+      "Reverse Address": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::lambda:invoke",
+        "ResultPath": "$.results.address",
+        "Parameters": {
+          "Payload.$": "$.results.coordinates.Payload.body",
+          "FunctionName": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_reverse-address-v05:$LATEST"
+        },
+        "Next": "Validate Query"
+      },
+      "Validate Query": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::lambda:invoke",
+        "ResultPath": "$.results.validation",
+        "Parameters": {
+          "FunctionName": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_validate-query-v05",
+          "Payload": {
+            "address_query.$": "$$.Execution.Input['query']",
+            "address_reversed.$": "$.results.address.Payload.body.address"
+          }
+        },
+        "Next": "Valid?"
+      },
+      "Valid?": {
+        "Type": "Choice",
+        "Choices": [
+          {
+            "Variable": "$.results.validation.Payload.body.query_isvalid",
+            "BooleanEquals": true,
+            "Next": "Success",
+            "Comment": "Query is valid. "
+          }
+        ],
+        "Default": "Fail"
+      },
+      "Success": {
+        "Type": "Succeed"
+      },
+      "Fail": {
+        "Type": "Fail"
+      }
+    }
+  }
