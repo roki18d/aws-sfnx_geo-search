@@ -156,8 +156,7 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties: 
       AttributeDefinitions: 
-        - 
-          AttributeName: "Album"
+        - AttributeName: "ExecutionID"
           AttributeType: "S"
         - 
           AttributeName: "Artist"
