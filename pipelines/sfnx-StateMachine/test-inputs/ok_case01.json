@@ -11,5 +11,18 @@
             "validate-query": {}, 
             "write-dynamodb": {}
         }
+    }, 
+    "function_arns": {
+        "get-coordinates": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_get-coordinates-v07", 
+        "reverse-address": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_reverse-address-v07", 
+        "validate-query": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_validate-query-v07", 
+        "get-placeinfo": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_get-placeinfo-v07", 
+        "get-altitude": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_get-altitude-v07", 
+        "get-weather": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_get-weather-v07", 
+        "write-dynamodb": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_write-dynamodb-v07"
+    }, 
+    "topic_arns": {
+        "fail": "arn:aws:sns:ap-northeast-1:774282056395:sfnx-topic-fail", 
+        "success": "arn:aws:sns:ap-northeast-1:774282056395:sfnx-topic-success"
     }
 }

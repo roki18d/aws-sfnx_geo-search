@@ -3,6 +3,7 @@ import os
 import json
 import pprint
 import traceback
+from unittest import result
 
 import boto3
 
@@ -13,7 +14,15 @@ class UnexpectedError(Exception):
 
 def lambda_handler(event, context): 
 
+    dynamodb_table_name = 'sfnx-DynamoDB-APIResultSets'
+
     try: 
+        states_execution_id = event["states_execution_id"]
+        query = event["query"]
+        result_set = event["result_set"]
+
+        
+
         response_body = {"report": None}
         return {'statusCode': 200, 'body': response_body}
 

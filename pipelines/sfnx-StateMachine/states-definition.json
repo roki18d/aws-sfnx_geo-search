@@ -6,9 +6,15 @@
       "Type": "Task",
       "Resource": "arn:aws:states:::lambda:invoke",
       "ResultPath": "$.results.coordinates",
+      "ResultSelector": {
+        "statusCode.$": "$.Payload.statusCode",
+        "body.$": "$.Payload.body"
+      },
       "Parameters": {
-        "FunctionName": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_get-coordinates-v05:$LATEST",
-        "Payload.$": "$$.Execution.Input"
+        "FunctionName.$": "$$.Execution.Input['function_arns']['get-coordinates']",
+        "Payload": {
+          "query.$": "$$.Execution.Input['query']"
+        }
       },
       "Next": "Reverse Address"
     },
@@ -16,9 +22,13 @@
       "Type": "Task",
       "Resource": "arn:aws:states:::lambda:invoke",
       "ResultPath": "$.results.address",
+      "ResultSelector": {
+        "statusCode.$": "$.Payload.statusCode", 
+        "body.$": "$.Payload.body"
+      },
       "Parameters": {
-        "Payload.$": "$.results.coordinates.Payload.body",
-        "FunctionName": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_reverse-address-v05:$LATEST"
+        "FunctionName.$": "$$.Execution.Input['function_arns']['reverse-address']",
+        "Payload.$": "$.results.coordinates.body"
       },
       "Next": "Validate Query"
     },
@@ -26,11 +36,15 @@
       "Type": "Task",
       "Resource": "arn:aws:states:::lambda:invoke",
       "ResultPath": "$.results.validation",
+      "ResultSelector": {
+        "statusCode.$": "$.Payload.statusCode",
+        "body.$": "$.Payload.body"
+      },
       "Parameters": {
-        "FunctionName": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_validate-query-v05",
+        "FunctionName.$": "$$.Execution.Input['function_arns']['validate-query']",
         "Payload": {
           "address_query.$": "$$.Execution.Input['query']",
-          "address_reversed.$": "$.results.address.Payload.body.address"
+          "address_reversed.$": "$.results.address.body.address"
         }
       },
       "Next": "Valid?"
@@ -39,7 +53,7 @@
       "Type": "Choice",
       "Choices": [
         {
-          "Variable": "$.results.validation.Payload.body.query_isvalid",
+          "Variable": "$.results.validation.body.query_isvalid",
           "BooleanEquals": true,
           "Next": "Parallel",
           "Comment": "Query is valid. "
@@ -52,28 +66,76 @@
       "Resource": "arn:aws:states:::sns:publish",
       "Parameters": {
         "Message.$": "$",
-        "TopicArn": "arn:aws:sns:ap-northeast-1:774282056395:sfnx-topic-fail"
+        "TopicArn.$": "$$.Execution.Input['topic_arns']['fail']"
       },
       "Next": "Fail"
     },
     "Parallel": {
       "Type": "Parallel",
-      "Next": "Notify SUCCESS",
+      "Next": "Write DynamoDB",
       "Branches": [
         {
-          "StartAt": "Pass #1",
+          "StartAt": "Get Placeinfo",
           "States": {
-            "Pass #1": {
-              "Type": "Pass",
+            "Get Placeinfo": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "OutputPath": "$.response",
+              "ResultPath": "$.response",
+              "ResultSelector": {
+                "placeinfo": {
+                  "statusCode.$": "$.Payload.statusCode",
+                  "body.$": "$.Payload.body"
+                }
+              },
+              "Parameters": {
+                "FunctionName.$": "$$.Execution.Input['function_arns']['get-placeinfo']",
+                "Payload.$": "$.results.coordinates.body"
+              },
               "End": true
             }
           }
         },
         {
-          "StartAt": "Pass #2",
+          "StartAt": "Get Altitude",
           "States": {
-            "Pass #2": {
-              "Type": "Pass",
+            "Get Altitude": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "OutputPath": "$.response",
+              "ResultPath": "$.response",
+              "ResultSelector": {
+                "altitude": {
+                  "statusCode.$": "$.Payload.statusCode",
+                  "body.$": "$.Payload.body"
+                }
+              },
+              "Parameters": {
+                "FunctionName.$": "$$.Execution.Input['function_arns']['get-altitude']",
+                "Payload.$": "$.results.coordinates.body"
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "Get Weather",
+          "States": {
+            "Get Weather": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "OutputPath": "$.response",
+              "ResultPath": "$.response",
+              "ResultSelector": {
+                "weather": {
+                  "statusCode.$": "$.Payload.statusCode",
+                  "body.$": "$.Payload.body"
+                }
+              },
+              "Parameters": {
+                "FunctionName.$": "$$.Execution.Input['function_arns']['get-weather']",
+                "Payload.$": "$.results.coordinates.body"
+              },
               "End": true
             }
           }
@@ -86,14 +148,33 @@
           ],
           "Next": "Notify FAIL"
         }
-      ]
+      ],
+      "ResultPath": "$.results.parallel"
+    },
+    "Write DynamoDB": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "ResultPath": "$.results.writedb",
+      "ResultSelector": {
+        "statusCode.$": "$.Payload.statusCode",
+        "body.$": "$.Payload.body"
+      },
+      "Parameters": {
+        "FunctionName.$": "$$.Execution.Input['function_arns']['write-dynamodb']",
+        "Payload": {
+          "states_execution_id.$": "$$.Execution.Id",
+          "query.$": "$$.Execution.Input['query']",
+          "result.$": "$.results.parallel"
+        }
+      },
+      "Next": "Notify SUCCESS"
     },
     "Notify SUCCESS": {
       "Type": "Task",
       "Resource": "arn:aws:states:::sns:publish",
       "Parameters": {
         "Message.$": "$",
-        "TopicArn": "arn:aws:sns:ap-northeast-1:774282056395:sfnx-topic-success"
+        "TopicArn.$": "$$.Execution.Input['topic_arns']['success']"
       },
       "Next": "Success"
     },

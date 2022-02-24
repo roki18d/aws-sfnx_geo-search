@@ -5,7 +5,7 @@ Description: Lambda functions for SFNX
 Parameters: 
   Version: 
     Type: String
-    Default: "v06"
+    Default: "v07"
   YahooAPIClientID: 
     Type: String
     Default: dj00aiZpPXh1Snk3OGlrRjRUciZzPWNvbnN1bWVyc2VjcmV0Jng9MWY-
@@ -155,76 +155,29 @@ Resources:
   DynamoDBTableAPIResults: 
     Type: AWS::DynamoDB::Table
     Properties: 
+      TableName: "sfnx-DynamoDB-APIResultSets"
       AttributeDefinitions: 
-        - AttributeName: "ExecutionID"
+        - AttributeName: "Coordinates"
           AttributeType: "S"
-        - 
-          AttributeName: "Artist"
+        - AttributeName: "CreatedTime"
           AttributeType: "S"
-        - 
-          AttributeName: "Sales"
-          AttributeType: "N"
-        - 
-          AttributeName: "NumberOfSongs"
-          AttributeType: "N"
+        - AttributeName: "AddressLv3"
+          AttributeType: "S"
       KeySchema: 
-        - 
-          AttributeName: "Album"
+        - AttributeName: "Coordinates"
           KeyType: "HASH"
-        - 
-          AttributeName: "Artist"
+        - AttributeName: "CreatedTime"
           KeyType: "RANGE"
+      GlobalSecondaryIndexes:
+        - IndexName: "GSI"
+          KeySchema:
+            - AttributeName: "AddressLv3"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "KEYS_ONLY"
+          ProvisionedThroughput: 
+            ReadCapacityUnits: "5"
+            WriteCapacityUnits: "5"
       ProvisionedThroughput: 
         ReadCapacityUnits: "5"
         WriteCapacityUnits: "5"
-      TableName: "myTableName"
-      GlobalSecondaryIndexes: 
-        - 
-          IndexName: "myGSI"
-          KeySchema: 
-            - 
-              AttributeName: "Sales"
-              KeyType: "HASH"
-            - 
-              AttributeName: "Artist"
-              KeyType: "RANGE"
-          Projection: 
-            NonKeyAttributes: 
-              - "Album"
-              - "NumberOfSongs"
-            ProjectionType: "INCLUDE"
-          ProvisionedThroughput: 
-            ReadCapacityUnits: "5"
-            WriteCapacityUnits: "5"
-        - 
-          IndexName: "myGSI2"
-          KeySchema: 
-            - 
-              AttributeName: "NumberOfSongs"
-              KeyType: "HASH"
-            - 
-              AttributeName: "Sales"
-              KeyType: "RANGE"
-          Projection: 
-            NonKeyAttributes: 
-              - "Album"
-              - "Artist"
-            ProjectionType: "INCLUDE"
-          ProvisionedThroughput: 
-            ReadCapacityUnits: "5"
-            WriteCapacityUnits: "5"
-      LocalSecondaryIndexes: 
-        - 
-          IndexName: "myLSI"
-          KeySchema: 
-            - 
-              AttributeName: "Album"
-              KeyType: "HASH"
-            - 
-              AttributeName: "Sales"
-              KeyType: "RANGE"
-          Projection: 
-            NonKeyAttributes: 
-              - "Artist"
-              - "NumberOfSongs"
-            ProjectionType: "INCLUDE"
