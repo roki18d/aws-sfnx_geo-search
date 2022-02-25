@@ -36,7 +36,7 @@ def lambda_handler(event, context):
                 result = {"Uid": uid, "Name": name, "Score": score}
                 results.append(result)
         
-        response_body = {"results": results}
+        response_body = {"placeinfo": results}
         return {'statusCode': 200, 'body': response_body}
         
     except Exception as e:
