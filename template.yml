@@ -33,6 +33,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Tracing: Active
 
   FunctionReverseAddress:
     Type: AWS::Serverless::Function
@@ -48,6 +49,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Tracing: Active
     
   FunctionValidateQuery:
     Type: AWS::Serverless::Function
@@ -63,6 +65,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Tracing: Active
 
   FunctionGetPlaceinfo:
     Type: AWS::Serverless::Function
@@ -78,6 +81,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Tracing: Active
 
   FunctionGetWeather:
     Type: AWS::Serverless::Function
@@ -93,6 +97,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Tracing: Active
 
   FunctionGetAltitude:
     Type: AWS::Serverless::Function
@@ -108,6 +113,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Tracing: Active
 
   FunctionWriteDynamoDB:
     Type: AWS::Serverless::Function
@@ -124,6 +130,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Tracing: Active
 
   # ************************************************************
   # SNS Topics
