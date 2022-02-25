@@ -14,6 +14,9 @@ class UnexpectedError(Exception):
 
 def lambda_handler(event, context): 
     
+    if event.get("skip"):
+        return {'statusCode': 200, 'body': "SKIPPED"}
+
     threshold = 20
 
     try: 

@@ -10,8 +10,13 @@
             "reverse-address": {}, 
             "validate-query": {}, 
             "write-dynamodb": {}
+        }, 
+        "skip": {
+            "get-placeinfo":false, 
+            "get-altitude": false, 
+            "get-weather": false
         }
-    }, 
+    },  
     "function_arns": {
         "get-coordinates": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_get-coordinates-v07", 
         "reverse-address": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_reverse-address-v07", 
