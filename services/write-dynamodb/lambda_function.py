@@ -28,7 +28,7 @@ def lambda_handler(event, context):
         created_time = dt.datetime.now().strftime("%Y-%m%d-%H%M%S")
 
         # Set Attributes
-        states_execution_id = event["states_execution_id"]
+        states_execution_id = event["states_execution_id"].split(":")[-1]
         address_lv3 = event["address_lv3"]
         query = event["query"]
         result_set = event["result_set"]
