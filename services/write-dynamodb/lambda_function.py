@@ -29,7 +29,7 @@ def lambda_handler(event, context):
 
         # Set Attributes
         states_execution_id = event["states_execution_id"]
-        address_lv3 = event["result_set"]
+        address_lv3 = event["address_lv3"]
         query = event["query"]
         result_set = event["result_set"]
 
@@ -48,7 +48,7 @@ def lambda_handler(event, context):
                 "StatesExecutionId": {"S": states_execution_id},
                 "Query": {"S": query}, 
                 "AddressLv3": {"S": address_lv3}, 
-                "Report": {"S": report}
+                "Report": {"S": json.dumps(report)}, 
             }, 
         )
 

@@ -29,14 +29,7 @@ def lambda_handler(event, context):
         
         address_lv3_dict = dict()
         for element in address_elements: 
-            if "prefecture" in element.keys(): 
-                address_lv3_dict["prefecture"] = element["prefecture"]
-            if "city" in element.keys():
-                address_lv3_dict["city"] = element["city"]
-            if "oaza" in element.keys(): 
-                address_lv3_dict["oaza"] = element["oaza"]
-            if "aza" in element.keys(): 
-                address_lv3_dict["aza"] = element["aza"]
+            address_lv3_dict[element["Level"]] = element["Name"]
         
         address_lv3 = \
             address_lv3_dict["prefecture"] + \
