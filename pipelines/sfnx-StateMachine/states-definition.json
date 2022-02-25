@@ -23,7 +23,7 @@
       "Resource": "arn:aws:states:::lambda:invoke",
       "ResultPath": "$.results.address",
       "ResultSelector": {
-        "statusCode.$": "$.Payload.statusCode", 
+        "statusCode.$": "$.Payload.statusCode",
         "body.$": "$.Payload.body"
       },
       "Parameters": {
@@ -162,9 +162,11 @@
       "Parameters": {
         "FunctionName.$": "$$.Execution.Input['function_arns']['write-dynamodb']",
         "Payload": {
+          "coordinates.$": "$.results.coordinates.body.coordinates",
           "states_execution_id.$": "$$.Execution.Id",
           "query.$": "$$.Execution.Input['query']",
-          "result.$": "$.results.parallel"
+          "address_lv3.$": "$.results.address.body.address_lv3",
+          "result_set.$": "$.results.parallel"
         }
       },
       "Next": "Notify SUCCESS"
