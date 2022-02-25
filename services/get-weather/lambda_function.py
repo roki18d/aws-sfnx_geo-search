@@ -13,6 +13,11 @@ class UnexpectedError(Exception):
 
 def lambda_handler(event, context): 
 
+    service_key = "weather"
+    if event.get("skip"): 
+        response_body = {'statusCode': 200, 'body': {service_key: None}}
+        return response_body
+
     api_config_past = str(1)
     api_config_interval = str(5)
 
@@ -41,7 +46,7 @@ def lambda_handler(event, context):
             formatted_record = {"Type": record_type, "Date": record_date, "Rainfall": rainfall}
             weather.append(formatted_record)
 
-        response_body = {"weather": weather}
+        response_body = {service_key: weather}
         return {'statusCode': 200, 'body': response_body}
 
     except Exception as e:

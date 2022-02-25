@@ -12,6 +12,11 @@ class UnexpectedError(Exception):
     pass
 
 def lambda_handler(event, context): 
+    
+    service_key = "altitude"
+    if event.get("skip"): 
+        response_body = {'statusCode': 200, 'body': {service_key: None}}
+        return response_body
 
     try: 
         lat = str(urllib.parse.quote(event["coordinates"]["lat"]))
@@ -25,7 +30,7 @@ def lambda_handler(event, context):
         pprint.pprint(f"api_response.keys(): {api_response.keys()}")
         pprint.pprint(f"api_response: {api_response}")
         altitude = api_response["Feature"][0]["Property"]
-        response_body = {"altitude": altitude}
+        response_body = {service_key: altitude}
         return {'statusCode': 200, 'body': response_body}
 
     except Exception as e:

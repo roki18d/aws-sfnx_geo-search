@@ -14,7 +14,7 @@
         "skip": {
             "get-placeinfo":false, 
             "get-altitude": false, 
-            "get-weather": false
+            "get-weather": true
         }
     },  
     "function_arns": {

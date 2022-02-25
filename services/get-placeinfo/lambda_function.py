@@ -14,8 +14,10 @@ class UnexpectedError(Exception):
 
 def lambda_handler(event, context): 
     
-    if event.get("skip"):
-        return {'statusCode': 200, 'body': "SKIPPED"}
+    service_key = "placeinfo"
+    if event.get("skip"): 
+        response_body = {'statusCode': 200, 'body': {service_key: None}}
+        return response_body
 
     threshold = 20
 
@@ -39,7 +41,7 @@ def lambda_handler(event, context):
                 result = {"Uid": uid, "Name": name, "Score": score}
                 results.append(result)
         
-        response_body = {"placeinfo": results}
+        response_body = {service_key: results}
         return {'statusCode': 200, 'body': response_body}
         
     except Exception as e:
