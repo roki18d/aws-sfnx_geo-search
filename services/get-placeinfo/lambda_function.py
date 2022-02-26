@@ -1,8 +1,8 @@
 # coding: utf-8
 import os
 import json
+import time
 import pprint
-from unittest import result
 import urllib
 import requests
 import traceback
@@ -15,11 +15,14 @@ class UnexpectedError(Exception):
 def lambda_handler(event, context): 
     
     service_key = "placeinfo"
+    threshold = 20
+    
     if event.get("skip"): 
         response_body = {'statusCode': 200, 'body': {service_key: None}}
         return response_body
 
-    threshold = 20
+    if event.get("pause"): 
+        time.sleep(int(event.get("pause")))
 
     try: 
         lat = str(urllib.parse.quote(event["coordinates"]["lat"]))

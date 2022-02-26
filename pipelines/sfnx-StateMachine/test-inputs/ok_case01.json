@@ -1,20 +1,24 @@
 {
     "query": "東京都渋谷区宇田川町", 
     "config": {
-        "dummy_error": false, 
-        "services": {
-            "get-altitude": {}, 
-            "get-coordinates": {}, 
-            "get-placeinfo": {}, 
-            "get-weather":  {}, 
-            "reverse-address": {}, 
-            "validate-query": {}, 
-            "write-dynamodb": {}
+        "dummy_error_ratio": {
+            "get-altitude": 0, 
+            "get-coordinates": 0, 
+            "get-placeinfo": 0.2, 
+            "get-weather":  0.1, 
+            "reverse-address": 0.05, 
+            "validate-query": 0, 
+            "write-dynamodb": 0.05
         }, 
         "skip": {
             "get-placeinfo":false, 
             "get-altitude": false, 
-            "get-weather": true
+            "get-weather": false
+        },
+        "pause": {
+            "get-placeinfo":false, 
+            "get-altitude": 5, 
+            "get-weather": 0
         }
     },  
     "function_arns": {

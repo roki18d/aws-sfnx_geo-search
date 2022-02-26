@@ -33,6 +33,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Timeout: 60
       Tracing: Active
 
   FunctionReverseAddress:
@@ -49,6 +50,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Timeout: 60
       Tracing: Active
     
   FunctionValidateQuery:
@@ -65,6 +67,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Timeout: 60
       Tracing: Active
 
   FunctionGetPlaceinfo:
@@ -81,6 +84,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Timeout: 60
       Tracing: Active
 
   FunctionGetWeather:
@@ -97,6 +101,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Timeout: 60
       Tracing: Active
 
   FunctionGetAltitude:
@@ -113,6 +118,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Timeout: 60
       Tracing: Active
 
   FunctionWriteDynamoDB:
@@ -130,6 +136,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+      Timeout: 60
       Tracing: Active
 
   # ************************************************************
