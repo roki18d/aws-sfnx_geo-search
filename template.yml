@@ -5,7 +5,7 @@ Description: Lambda functions for SFNX
 Parameters: 
   Version: 
     Type: String
-    Default: "v07"
+    Default: "v08"
   YahooAPIClientID: 
     Type: String
     Default: dj00aiZpPXh1Snk3OGlrRjRUciZzPWNvbnN1bWVyc2VjcmV0Jng9MWY-
@@ -18,6 +18,22 @@ Resources:
   # ************************************************************
   # Lambda functions
   # ************************************************************
+
+  FunctionGetCoordinates:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub sfnx-function_get-unirand-${Version}
+      CodeUri: ./services/get-unirand/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.9
+      MemorySize: 256
+      Policies: 
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      Environment:
+        Variables:
+          CLIENT_ID: !Ref YahooAPIClientID
+      Timeout: 60
+      Tracing: Active
 
   FunctionGetCoordinates:
     Type: AWS::Serverless::Function
