@@ -24,7 +24,8 @@ def lambda_handler(event, context):
         import boto3; lambda_client = boto3.client('lambda')
         response = lambda_client.invoke(
             FunctionName=function_name_get_unirand, 
-            InvocationType='Event', )
+            InvocationType='RequestResponse', )
+        pprint.pprint(f'response: {response}')
         unirand = response['Payload']['body']['unirand']
         if unirand < ie_ratio: 
             msg = f'intentional_error_ratio: {ie_ratio}, unirand: {unirand}'
