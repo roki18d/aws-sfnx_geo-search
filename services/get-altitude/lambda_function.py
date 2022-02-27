@@ -30,7 +30,8 @@ def lambda_handler(event, context):
     if event.get("pause"): 
         time.sleep(int(event.get("pause")))
 
-    ie_ratio = event.get("intentional_error_ratio")
+    ie_ratio = float(event.get("intentional_error_ratio"))
+    pprint.pprint(f'intentional_error_ratio: {ie_ratio}, unirand: {unirand}')
     if ie_ratio: 
         response = lambda_client.invoke(
             FunctionName=function_name_get_unirand, )

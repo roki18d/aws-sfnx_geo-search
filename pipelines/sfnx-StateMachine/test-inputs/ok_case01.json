@@ -12,8 +12,8 @@
             "get-weather": 0
         },
         "intentional_error_ratio": {
-            "get-altitude": 0, 
-            "get-coordinates": 0.99, 
+            "get-altitude": 0.99, 
+            "get-coordinates": 0, 
             "get-placeinfo": 0.2, 
             "get-weather":  0.1, 
             "reverse-address": 0.05, 
