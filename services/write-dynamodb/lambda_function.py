@@ -15,7 +15,7 @@ class UnexpectedError(Exception):
 
 def lambda_handler(event, context): 
 
-    dynamodb_table_name = 'sfnx-DynamoDB-APIResultSets'
+    dynamodb_table_name = 'gs-DynamoDBTable-Reports'
     keys = ["placeinfo", "altitude", "weather"]
 
     try:

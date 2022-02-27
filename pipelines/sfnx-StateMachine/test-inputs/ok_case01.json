@@ -13,7 +13,7 @@
         },
         "intentional_error_ratio": {
             "get-altitude": 0, 
-            "get-coordinates": 0, 
+            "get-coordinates": 0.99, 
             "get-placeinfo": 0.2, 
             "get-weather":  0.1, 
             "reverse-address": 0.05, 
@@ -22,16 +22,16 @@
         }
     },  
     "function_arns": {
-        "get-coordinates": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_get-coordinates-v07", 
-        "reverse-address": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_reverse-address-v07", 
-        "validate-query": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_validate-query-v07", 
-        "get-placeinfo": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_get-placeinfo-v07", 
-        "get-altitude": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_get-altitude-v07", 
-        "get-weather": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_get-weather-v07", 
-        "write-dynamodb": "arn:aws:lambda:ap-northeast-1:774282056395:function:sfnx-function_write-dynamodb-v07"
+        "get-coordinates": "arn:aws:lambda:ap-northeast-1:774282056395:function:gs-function_get-coordinates", 
+        "reverse-address": "arn:aws:lambda:ap-northeast-1:774282056395:function:gs-function_reverse-address", 
+        "validate-query": "arn:aws:lambda:ap-northeast-1:774282056395:function:gs-function_validate-query", 
+        "get-placeinfo": "arn:aws:lambda:ap-northeast-1:774282056395:function:gs-function_get-placeinfo", 
+        "get-altitude": "arn:aws:lambda:ap-northeast-1:774282056395:function:gs-function_get-altitude", 
+        "get-weather": "arn:aws:lambda:ap-northeast-1:774282056395:function:gs-function_get-weather", 
+        "write-dynamodb": "arn:aws:lambda:ap-northeast-1:774282056395:function:gs-function_write-dynamodb"
     }, 
     "topic_arns": {
-        "fail": "arn:aws:sns:ap-northeast-1:774282056395:sfnx-topic-fail", 
-        "success": "arn:aws:sns:ap-northeast-1:774282056395:sfnx-topic-success"
+        "fail": "arn:aws:sns:ap-northeast-1:774282056395:gs-topic-fail", 
+        "success": "arn:aws:sns:ap-northeast-1:774282056395:gs-topic-success"
     }
 }
