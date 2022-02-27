@@ -29,9 +29,10 @@ def lambda_handler(event, context):
     if event.get("pause"): 
         time.sleep(int(event.get("pause")))
 
-    ie_ratio = float(event.get("intentional_error_ratio"))
-    pprint.pprint(f'intentional_error_ratio: {ie_ratio}')
-    if ie_ratio: 
+    ie_ratio_str = event.get("intentional_error_ratio")
+    pprint.pprint(f'intentional_error_ratio: {ie_ratio_str}')
+    if ie_ratio_str: 
+        ie_ratio = float(ie_ratio_str)
         import boto3; lambda_client = boto3.client('lambda')
         response = lambda_client.invoke(
             FunctionName=function_name_get_unirand, )
