@@ -18,7 +18,7 @@ class UnexpectedError(Exception):
 def lambda_handler(event, context): 
 
     ie_ratio = float(event.get("intentional_error_ratio"))
-    pprint.pprint(f'intentional_error_ratio: {ie_ratio}, unirand: {unirand}')
+    pprint.pprint(f'intentional_error_ratio: {ie_ratio}')
     if ie_ratio: 
         import boto3; lambda_client = boto3.client('lambda')
         response = lambda_client.invoke(
