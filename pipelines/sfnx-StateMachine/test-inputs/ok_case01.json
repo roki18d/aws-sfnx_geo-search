@@ -8,7 +8,7 @@
         },
         "pause": {
             "get-placeinfo": 0, 
-            "get-altitude": 3, 
+            "get-altitude": 1, 
             "get-weather": 0
         },
         "intentional_error_ratio": {
