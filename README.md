@@ -1,5 +1,9 @@
 # SFNX: GeoSearch
 
+## References
+
+* https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install-linux.html
+
 ## PyPi module local installation
 
 ```
