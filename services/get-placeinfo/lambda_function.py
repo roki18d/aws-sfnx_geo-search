@@ -60,12 +60,15 @@ def lambda_handler(event, context):
         results = list()
 
         for result in api_results:
-            uid = result["Uid"] 
-            name = result["Name"]
-            score = float(result["Score"])
-            if score >= threshold: 
-                result = {"Uid": uid, "Name": name, "Score": score}
-                results.append(result)
+            try: 
+                uid = result["Uid"] 
+                name = result["Name"]
+                score = float(result["Score"])
+                if score >= threshold: 
+                    result = {"Uid": uid, "Name": name, "Score": score}
+                    results.append(result)
+            except Exception as e:
+                pass
         
         response_body = {service_key: results}
         return {'statusCode': 200, 'body': response_body}
