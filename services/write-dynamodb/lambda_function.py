@@ -5,10 +5,11 @@ import pprint
 import traceback
 import datetime as dt
 
-import boto3
-
 client_id = os.environ["CLIENT_ID"]
-dynamodb_client = boto3.client("dynamodb")
+function_name_get_unirand = os.environ["FUNCTION_NAME_GET_UNIRAND"]
+
+class IntentionalError(Exception):
+    pass
 
 class UnexpectedError(Exception):
     pass
@@ -18,6 +19,17 @@ def lambda_handler(event, context):
     dynamodb_table_name = 'gs-DynamoDBTable-Reports'
     keys = ["placeinfo", "altitude", "weather"]
 
+    ie_ratio = float(event.get("intentional_error_ratio"))
+    pprint.pprint(f'intentional_error_ratio: {ie_ratio}, unirand: {unirand}')
+    if ie_ratio: 
+        import boto3; lambda_client = boto3.client('lambda')
+        response = lambda_client.invoke(
+            FunctionName=function_name_get_unirand, )
+        unirand = response['Payload']['body']['unirand']
+        if unirand < ie_ratio: 
+            msg = f'intentional_error_ratio: {ie_ratio}, unirand: {unirand}'
+            raise IntentionalError(msg)
+            
     try:
         pprint.pprint(event)
         
@@ -40,6 +52,7 @@ def lambda_handler(event, context):
                     report[key] = result[key]["body"][key]
 
         # Write to DynamoDB
+        import boto3; dynamodb_client = boto3.client("dynamodb")
         response_writedb = dynamodb_client.put_item(
             TableName=dynamodb_table_name, 
             Item={

@@ -7,16 +7,13 @@ import urllib
 import requests
 import traceback
 
-import boto3
-lambda_client = boto3.client('lambda')
-
 client_id = os.environ["CLIENT_ID"]
 function_name_get_unirand = os.environ["FUNCTION_NAME_GET_UNIRAND"]
 
-class UnexpectedError(Exception):
+class IntentionalError(Exception):
     pass
 
-class IntentionalError(Exception):
+class UnexpectedError(Exception):
     pass
 
 def lambda_handler(event, context): 
@@ -33,6 +30,7 @@ def lambda_handler(event, context):
     ie_ratio = float(event.get("intentional_error_ratio"))
     pprint.pprint(f'intentional_error_ratio: {ie_ratio}, unirand: {unirand}')
     if ie_ratio: 
+        import boto3; lambda_client = boto3.client('lambda')
         response = lambda_client.invoke(
             FunctionName=function_name_get_unirand, )
         unirand = response['Payload']['body']['unirand']

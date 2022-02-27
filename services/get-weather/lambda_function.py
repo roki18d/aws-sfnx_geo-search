@@ -8,6 +8,10 @@ import requests
 import traceback
 
 client_id = os.environ["CLIENT_ID"]
+function_name_get_unirand = os.environ["FUNCTION_NAME_GET_UNIRAND"]
+
+class IntentionalError(Exception):
+    pass
 
 class UnexpectedError(Exception):
     pass
@@ -24,6 +28,17 @@ def lambda_handler(event, context):
 
     if event.get("pause"): 
         time.sleep(int(event.get("pause")))
+
+    ie_ratio = float(event.get("intentional_error_ratio"))
+    pprint.pprint(f'intentional_error_ratio: {ie_ratio}, unirand: {unirand}')
+    if ie_ratio: 
+        import boto3; lambda_client = boto3.client('lambda')
+        response = lambda_client.invoke(
+            FunctionName=function_name_get_unirand, )
+        unirand = response['Payload']['body']['unirand']
+        if unirand < ie_ratio: 
+            msg = f'intentional_error_ratio: {ie_ratio}, unirand: {unirand}'
+            raise IntentionalError(msg)
 
     try: 
         lat = str(urllib.parse.quote(event["coordinates"]["lat"]))
