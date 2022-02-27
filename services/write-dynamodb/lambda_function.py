@@ -20,13 +20,20 @@ def lambda_handler(event, context):
     keys = ["placeinfo", "altitude", "weather"]
 
     ie_ratio_str = event.get("intentional_error_ratio")
-    pprint.pprint(f'intentional_error_ratio: {ie_ratio_str}')
+    print(f'intentional_error_ratio: {ie_ratio_str}')
     if ie_ratio_str: 
         ie_ratio = float(ie_ratio_str)
         import boto3; lambda_client = boto3.client('lambda')
         response = lambda_client.invoke(
-            FunctionName=function_name_get_unirand, )
-        unirand = response['Payload']['body']['unirand']
+            FunctionName=function_name_get_unirand, 
+            InvocationType='RequestResponse', )
+        payload = response['Payload']
+        print(payload)
+        try: 
+            unirand = payload['body']['unirand']
+        except: 
+            payload = json.loads(payload.read())
+            unirand = payload['body']['unirand']
         if unirand < ie_ratio: 
             msg = f'intentional_error_ratio: {ie_ratio}, unirand: {unirand}'
             raise IntentionalError(msg)

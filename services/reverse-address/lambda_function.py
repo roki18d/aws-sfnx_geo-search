@@ -18,15 +18,20 @@ class UnexpectedError(Exception):
 def lambda_handler(event, context): 
 
     ie_ratio_str = event.get("intentional_error_ratio")
-    pprint.pprint(f'intentional_error_ratio: {ie_ratio_str}')
+    print(f'intentional_error_ratio: {ie_ratio_str}')
     if ie_ratio_str: 
         ie_ratio = float(ie_ratio_str)
         import boto3; lambda_client = boto3.client('lambda')
         response = lambda_client.invoke(
             FunctionName=function_name_get_unirand, 
             InvocationType='RequestResponse', )
-        pprint.pprint(f'response: {response}')
-        unirand = response['Payload']['body']['unirand']
+        payload = response['Payload']
+        print(payload)
+        try: 
+            unirand = payload['body']['unirand']
+        except: 
+            payload = json.loads(payload.read())
+            unirand = payload['body']['unirand']
         if unirand < ie_ratio: 
             msg = f'intentional_error_ratio: {ie_ratio}, unirand: {unirand}'
             raise IntentionalError(msg)
