@@ -19,7 +19,7 @@ Resources:
   # Lambda functions
   # ************************************************************
 
-  FunctionGetCoordinates:
+  FunctionGetUnirand:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub sfnx-function_get-unirand-${Version}
@@ -29,6 +29,7 @@ Resources:
       MemorySize: 256
       Policies: 
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
@@ -45,6 +46,7 @@ Resources:
       MemorySize: 256
       Policies: 
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
@@ -61,6 +63,7 @@ Resources:
       MemorySize: 256
       Policies: 
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
@@ -77,6 +80,7 @@ Resources:
       MemorySize: 256
       Policies: 
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
@@ -93,6 +97,7 @@ Resources:
       MemorySize: 256
       Policies: 
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
@@ -109,6 +114,7 @@ Resources:
       MemorySize: 256
       Policies: 
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
@@ -125,6 +131,7 @@ Resources:
       MemorySize: 256
       Policies: 
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
@@ -141,6 +148,7 @@ Resources:
       MemorySize: 256
       Policies: 
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
         - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
       Environment:
         Variables:
