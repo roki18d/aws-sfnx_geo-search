@@ -9,6 +9,9 @@ Parameters:
   YahooAPIClientID: 
     Type: String
     Default: dj00aiZpPXh1Snk3OGlrRjRUciZzPWNvbnN1bWVyc2VjcmV0Jng9MWY-
+  FunctionNameGetUnirand: 
+    Type: String
+    Default: gs-function_get-unirand
   MainteinerEnailAddress: 
     Type: String
     Default: hiroki.y1124@gmail.com
@@ -22,24 +25,18 @@ Resources:
   FunctionGetUnirand:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub sfnx-function_get-unirand-${Version}
+      FunctionName: !Ref FunctionNameGetUnirand
       CodeUri: ./services/get-unirand/
       Handler: lambda_function.lambda_handler
       Runtime: python3.9
       MemorySize: 256
-      Policies: 
-        - arn:aws:iam::aws:policy/AmazonS3FullAccess
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
-      Environment:
-        Variables:
-          CLIENT_ID: !Ref YahooAPIClientID
       Timeout: 60
       Tracing: Active
 
   FunctionGetCoordinates:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub sfnx-function_get-coordinates-${Version}
+      FunctionName: gs-function_get-coordinates
       CodeUri: ./services/get-coordinates/
       Handler: lambda_function.lambda_handler
       Runtime: python3.9
@@ -50,13 +47,14 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+          FUNCTION_NAME_GET_UNIRAND: !Ref FunctionNameGetUnirand
       Timeout: 60
       Tracing: Active
 
   FunctionReverseAddress:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub sfnx-function_reverse-address-${Version}
+      FunctionName: gs-function_reverse-address
       CodeUri: ./services/reverse-address/
       Handler: lambda_function.lambda_handler
       Runtime: python3.9
@@ -67,13 +65,14 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+          FUNCTION_NAME_GET_UNIRAND: !Ref FunctionNameGetUnirand
       Timeout: 60
       Tracing: Active
     
   FunctionValidateQuery:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub sfnx-function_validate-query-${Version}
+      FunctionName: gs-function_validate-query
       CodeUri: ./services/validate-query/
       Handler: lambda_function.lambda_handler
       Runtime: python3.9
@@ -84,13 +83,14 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+          FUNCTION_NAME_GET_UNIRAND: !Ref FunctionNameGetUnirand
       Timeout: 60
       Tracing: Active
 
   FunctionGetPlaceinfo:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub sfnx-function_get-placeinfo-${Version}
+      FunctionName: gs-function_get-placeinfo
       CodeUri: ./services/get-placeinfo/
       Handler: lambda_function.lambda_handler
       Runtime: python3.9
@@ -101,13 +101,14 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+          FUNCTION_NAME_GET_UNIRAND: !Ref FunctionNameGetUnirand
       Timeout: 60
       Tracing: Active
 
   FunctionGetWeather:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub sfnx-function_get-weather-${Version}
+      FunctionName: gs-function_get-weather
       CodeUri: ./services/get-weather/
       Handler: lambda_function.lambda_handler
       Runtime: python3.9
@@ -118,13 +119,14 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+          FUNCTION_NAME_GET_UNIRAND: !Ref FunctionNameGetUnirand
       Timeout: 60
       Tracing: Active
 
   FunctionGetAltitude:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub sfnx-function_get-altitude-${Version}
+      FunctionName: gs-function_get-altitude
       CodeUri: ./services/get-altitude/
       Handler: lambda_function.lambda_handler
       Runtime: python3.9
@@ -135,13 +137,14 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+          FUNCTION_NAME_GET_UNIRAND: !Ref FunctionNameGetUnirand
       Timeout: 60
       Tracing: Active
 
   FunctionWriteDynamoDB:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub sfnx-function_write-dynamodb-${Version}
+      FunctionName: gs-function_write-dynamodb
       CodeUri: ./services/write-dynamodb/
       Handler: lambda_function.lambda_handler
       Runtime: python3.9
@@ -153,6 +156,7 @@ Resources:
       Environment:
         Variables:
           CLIENT_ID: !Ref YahooAPIClientID
+          FUNCTION_NAME_GET_UNIRAND: !Ref FunctionNameGetUnirand
       Timeout: 60
       Tracing: Active
 
@@ -163,7 +167,7 @@ Resources:
   TopicNotifyFail: 
     Type: AWS::SNS::Topic
     Properties: 
-      TopicName: "sfnx-topic-fail"
+      TopicName: "gs-topic-fail"
       DisplayName: "FAIL - GeoSearch"
       FifoTopic: False
       Subscription: 
@@ -173,7 +177,7 @@ Resources:
   TopicNotifySuccess: 
     Type: AWS::SNS::Topic
     Properties: 
-      TopicName: "sfnx-topic-success"
+      TopicName: "gs-topic-success"
       DisplayName: "SUCCESS - GeoSearch"
       FifoTopic: False
       Subscription: 
@@ -187,7 +191,7 @@ Resources:
   DynamoDBTableAPIResults: 
     Type: AWS::DynamoDB::Table
     Properties: 
-      TableName: "sfnx-DynamoDB-APIResultSets"
+      TableName: "gs-DynamoDBTable-Reports"
       AttributeDefinitions: 
         - AttributeName: "Coordinates"
           AttributeType: "S"
