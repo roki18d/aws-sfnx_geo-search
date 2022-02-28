@@ -8,7 +8,7 @@ Parameters:
     Default: "v08"
   YahooAPIClientID: 
     Type: String
-    Default: dj00aiZpPXh1Snk3OGlrRjRUciZzPWNvbnN1bWVyc2VjcmV0Jng9MWY-
+    Default: "{Your Client ID}"
   FunctionNameGetUnirand: 
     Type: String
     Default: gs-function_get-unirand
